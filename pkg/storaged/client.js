@@ -480,6 +480,14 @@ function init_model(callback) {
                 can_grow: true,
                 grow_needs_unmount: false
             },
+            
+            btrfs: {
+                can_format: true,
+                can_shrink: true,
+                shrink_needs_unmount: false,
+                can_grow: true,
+                grow_needs_unmount: false
+            }
         };
 
         if (client.manager.SupportedFilesystems && client.manager.CanResize) {
