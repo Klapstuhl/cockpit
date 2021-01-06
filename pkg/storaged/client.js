@@ -176,6 +176,7 @@ function init_proxies () {
     client.blocks_swap = proxies("Swapspace");
     client.iscsi_sessions = proxies("ISCSI.Session");
     client.jobs = proxies("Job");
+    client.fsys_btrfs = proxies("Filesystem.BTRFS");
 }
 
 /* Monitors
@@ -398,9 +399,11 @@ function init_model(callback) {
                 var defer = cockpit.defer();
                 client.manager_lvm2 = proxy("Manager.LVM2", "Manager");
                 client.manager_iscsi = proxy("Manager.ISCSI.Initiator", "Manager");
-                wait_all([client.manager_lvm2, client.manager_iscsi],
+                client.manager_btrfs = proxy("Manager.BTRFS", "Manager");
+                wait_all([client.manager_lvm2, client.manager_btrfs, client.manager_iscsi],
                          function () {
                              client.features.lvm2 = client.manager_lvm2.valid;
+                             client.features.btrfs = client.manager_btrfs.valid;
                              client.features.iscsi = (hacks.with_storaged_iscsi_sessions != "no" &&
                                                      client.manager_iscsi.valid &&
                                                      client.manager_iscsi.SessionsSupported !== false);
