@@ -25,6 +25,7 @@ import { SidePanel } from "./side-panel.jsx";
 import { create_mdraid, mdraid_rows } from "./mdraids-panel.jsx";
 import { create_vgroup, vgroup_rows } from "./vgroups-panel.jsx";
 import { vdo_feature, create_vdo, vdo_rows } from "./vdos-panel.jsx";
+import { create_btrfs_volume } from "./btrfs-panel.jsx";
 import { StorageBarMenu, StorageMenuItem } from "./storage-controls.jsx";
 
 const _ = cockpit.gettext;
@@ -62,11 +63,16 @@ export class ThingsPanel extends React.Component {
             is_enabled: () => client.features.lvm2
         };
 
+        const btrfs_feature = {
+            id_enabled: () => client.features.btrfs
+        };
+
         const actions = (
             <StorageBarMenu id="devices-menu" label={_("Create devices")}>
                 { menu_item(null, _("Create RAID device"), () => create_mdraid(client)) }
                 { menu_item(lvm2_feature, _("Create volume group"), () => create_vgroup(client)) }
                 { menu_item(vdo_feature(client), _("Create VDO device"), () => create_vdo(client)) }
+                { menu_item(btrfs_feature, _("Create Btrfs volume"), () => create_btrfs_volume(client)) }
             </StorageBarMenu>);
 
         var devices = [].concat(
